@@ -3,642 +3,211 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CEEN - Design Studio</title>
-    
-    <!-- Google Fonts: Poppins y Comfortaa -->
+    <title>CEEN - Prueba de Concepto Narrativo</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
     <style>
-        /* ==========================================================================
-           1. VARIABLES DE MARCA (Basadas en "CEEN identidad visual (5).jpg")
-           ========================================================================== */
         :root {
-            --coral: #F36766;
-            --yellow: #F4C752;
-            --blue: #4A77F4;
-            --cream: #EDE0D3;
+            --bg-crema: #F9F6F0;
+            --coral: #FF6B6B;
+            --azul: #4D96FF;
+            --amarillo: #FFD93D;
             --dark: #1E1717;
-            --font-main: 'Poppins', sans-serif;
-            --font-alt: 'Comfortaa', sans-serif;
-            --border-thick: 3px solid #1E1717;
         }
 
-        /* ==========================================================================
-           2. ESTILOS GENERALES Y RESET
-           ========================================================================== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        html {
-            scroll-behavior: smooth;
-        }
-
         body {
-            font-family: var(--font-main);
-            background-color: var(--cream);
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-crema);
             color: var(--dark);
-            line-height: 1.6;
+            transition: background-color 0.5s ease;
             overflow-x: hidden;
         }
 
-        /* ==========================================================================
-           3. NAVEGACIÓN (HEADER)
-           ========================================================================== */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 5%;
-            background-color: transparent;
-        }
-
-        .logo-text {
-            font-family: var(--font-alt);
-            font-weight: 700;
-            font-size: 1.8rem;
-            color: var(--dark);
-            text-decoration: none;
-            letter-spacing: -1px;
-        }
-
-        nav {
-            display: flex;
-            align-items: center;
-        }
-
-        nav a {
-            text-decoration: none;
-            color: var(--dark);
-            font-weight: 600;
-            margin-left: 25px;
-            font-size: 0.9rem;
-            transition: color 0.3s ease;
-        }
-
-        nav a:hover {
-            color: var(--blue);
-        }
-
-        /* ==========================================================================
-           4. COMPONENTES REUTILIZABLES (BOTONES Y SECCIONES)
-           ========================================================================== */
-        .btn {
-            display: inline-block;
-            padding: 12px 30px;
-            background-color: var(--coral);
-            color: #ffffff;
-            text-decoration: none;
-            font-weight: 600;
-            border-radius: 8px;
-            border: 2px solid var(--dark);
+        /* Indicador flotante para la Tesis */
+        .tesis-badge {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--amarillo);
+            padding: 10px 15px;
+            border: 3px solid var(--dark);
             box-shadow: 4px 4px 0px var(--dark);
-            transition: all 0.2s ease;
-            cursor: pointer;
-        }
-
-        .btn:hover {
-            transform: translate(-2px, -2px);
-            box-shadow: 6px 6px 0px var(--dark);
-            background-color: var(--blue);
-        }
-
-        .btn-sm {
-            padding: 6px 15px;
-            box-shadow: 2px 2px 0px var(--dark);
+            font-weight: 600;
             font-size: 0.8rem;
+            z-index: 1000;
         }
 
-        .btn-sm:hover {
-            box-shadow: 4px 4px 0px var(--dark);
-        }
-
-        .section-header {
-            text-align: center;
-            max-width: 700px;
-            margin: 0 auto 50px auto;
-            padding: 0 20px;
-        }
-
-        .section-header h2 {
-            font-family: var(--font-alt);
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-        }
-
-        /* ==========================================================================
-           5. SECCIÓN HERO (PRINCIPAL)
-           ========================================================================== */
-        .hero {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            min-height: 80vh;
+        /* Contenedor del Escenario Fijo (Igual que WebGPU) */
+        .stage-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
             align-items: center;
-            padding: 0 5%;
-            gap: 40px;
+            pointer-events: none; /* Permite escrolear a través de la escena */
+            z-index: 1;
         }
 
-        .hero-text h1 {
-            font-family: var(--font-alt);
-            font-size: 3.5rem;
-            line-height: 1.1;
-            margin-bottom: 20px;
-            font-weight: 700;
-        }
-
-        .hero-text h1 span {
-            color: var(--blue);
-        }
-
-        .hero-text p {
-            font-size: 1.1rem;
-            margin-bottom: 30px;
-            color: rgba(30, 23, 23, 0.85);
-            max-width: 500px;
-        }
-
-        .hero-image {
+        /* Simulación del Entorno Isométrico 3D */
+        .canvas-simulado {
+            position: relative;
+            width: 500px;
+            height: 300px;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        .logo-placeholder {
-            width: 100%;
-            max-width: 400px;
-            aspect-ratio: 1;
-            background-color: var(--yellow);
-            border: var(--border-thick);
-            border-radius: 16px;
+        /* Bloque del Logotipo CEEN */
+        .bloque-logo {
+            position: absolute;
+            width: 180px;
+            height: 80px;
+            background: var(--azul);
+            border: 4px solid var(--dark);
             box-shadow: 8px 8px 0px var(--dark);
             display: flex;
             justify-content: center;
             align-items: center;
-            font-family: var(--font-alt);
-            font-size: 1.2rem;
-            font-weight: bold;
-            text-align: center;
-            padding: 24px;
+            font-family: 'Comfortaa', cursive;
+            font-size: 2rem;
+            color: white;
+            transform: translate(100px, 0px); /* Posición desalineada inicial */
+            transition: transform 0.1s linear;
         }
 
-        /* ==========================================================================
-           6. BANNER DE SLOGAN
-           ========================================================================== */
-        .slogan-banner {
-            background-color: var(--blue);
-            color: #ffffff;
-            padding: 60px 20px;
-            text-align: center;
-            border-top: var(--border-thick);
-            border-bottom: var(--border-thick);
-        }
-
-        .slogan-banner h2 {
-            font-family: var(--font-main);
-            font-weight: 400;
-            font-size: 2.2rem;
-            font-style: italic;
-            letter-spacing: -0.5px;
-        }
-
-        /* ==========================================================================
-           7. SECCIÓN SOBRE NOSOTROS (ESTUDIO)
-           ========================================================================== */
-        .about {
-            padding: 100px 5%;
-            background-color: #ffffff;
-        }
-
-        .about-container {
-            max-width: 1000px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            align-items: center;
-        }
-
-        .about-title {
-            font-family: var(--font-alt);
-            font-size: 2.8rem;
-            color: var(--dark);
-            line-height: 1.2;
-        }
-
-        .about-title::after {
-            content: '';
-            display: block;
-            width: 70px;
-            height: 6px;
-            background-color: var(--yellow);
-            margin-top: 15px;
-            border: 1.5px solid var(--dark);
-            border-radius: 2px;
-        }
-
-        .about-text {
-            font-size: 1.1rem;
-            color: #333333;
-        }
-
-        .about-text strong {
-            color: var(--blue);
-        }
-
-        /* ==========================================================================
-           8. SECCIÓN SERVICIOS
-           ========================================================================== */
-        .services {
-            padding: 100px 5%;
-            background-color: var(--cream);
-            text-align: center;
-            border-top: var(--border-thick);
-        }
-
-        .services h2 {
-            font-family: var(--font-alt);
-            font-size: 2.5rem;
-            margin-bottom: 50px;
-        }
-
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .service-card {
-            background-color: #ffffff;
-            padding: 40px 30px;
-            border: var(--border-thick);
-            border-radius: 12px;
-            box-shadow: 6px 6px 0px var(--dark);
-            text-align: left;
-            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .service-card:hover {
-            transform: translateY(-6px);
-        }
-
-        .service-card h3 {
-            font-family: var(--font-alt);
-            margin-bottom: 15px;
-            font-size: 1.4rem;
-            font-weight: 700;
-        }
-
-        .service-card:nth-child(1) h3 { color: var(--coral); }
-        .service-card:nth-child(2) h3 { color: var(--blue); }
-        .service-card:nth-child(3) h3 { color: var(--yellow); }
-
-        .service-card p {
-            font-size: 0.95rem;
-            color: #555555;
-        }
-
-        /* ==========================================================================
-           9. SECCIÓN PORTAFOLIO
-           ========================================================================== */
-        .portfolio {
-            padding: 100px 5%;
-            background-color: #ffffff;
-            border-top: var(--border-thick);
-        }
-
-        .portfolio-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .portfolio-item {
-            background-color: #ffffff;
-            border: var(--border-thick);
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 6px 6px 0px var(--dark);
-            transition: transform 0.2s ease;
-        }
-
-        .portfolio-item:hover {
-            transform: translate(-4px, -4px);
-            box-shadow: 10px 10px 0px var(--dark);
-        }
-
-        .portfolio-thumb {
-            height: 280px;
-            position: relative;
-            border-bottom: var(--border-thick);
+        /* El Personaje de la Agencia */
+        .personaje-avatar {
+            position: absolute;
+            width: 90px;
+            height: 90px;
+            background: var(--coral);
+            border: 4px solid var(--dark);
+            border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
             font-weight: bold;
-            color: rgba(30, 23, 23, 0.4);
+            color: white;
+            box-shadow: 4px 4px 0px var(--dark);
+            transform: translate(-150px, 0px); /* Posición inicial izquierda */
+            transition: transform 0.1s linear;
         }
 
-        .project-tag {
-            position: absolute;
-            bottom: 15px;
-            left: 15px;
-            background-color: var(--dark);
-            color: #ffffff;
-            padding: 5px 12px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            border-radius: 20px;
-            text-transform: uppercase;
-        }
-
-        .portfolio-info {
-            padding: 25px;
-        }
-
-        .portfolio-info h3 {
-            font-family: var(--font-alt);
-            margin-bottom: 10px;
-            font-size: 1.3rem;
-        }
-
-        /* ==========================================================================
-           10. SECCIÓN PROCESO METODOLÓGICO
-           ========================================================================== */
-        .process {
-            padding: 100px 5%;
-            background-color: var(--cream);
-            border-top: var(--border-thick);
-        }
-
-        .process-timeline {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
-            max-width: 1100px;
-            margin: 40px auto 0 auto;
-        }
-
-        .process-step {
-            background-color: #ffffff;
-            padding: 40px 30px 30px 30px;
-            border: var(--border-thick);
-            border-radius: 12px;
+        /* Secciones invisibles pero reales que dan la altura para el Scroll */
+        .section-trigger {
             position: relative;
-            box-shadow: 5px 5px 0px var(--dark);
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            padding-left: 10%;
+            z-index: 2; /* Por encima del canvas para que sean legibles */
         }
 
-        .step-number {
-            position: absolute;
-            top: -25px;
-            left: 20px;
-            background-color: var(--yellow);
-            color: var(--dark);
-            font-family: var(--font-alt);
-            font-size: 1.5rem;
-            font-weight: 700;
-            padding: 5px 15px;
-            border: var(--border-thick);
-            border-radius: 8px;
-            box-shadow: 3px 3px 0px var(--dark);
+        .section-trigger:nth-child(even) {
+            justify-content: flex-end;
+            padding-left: 0;
+            padding-right: 10%;
         }
 
-        .process-step h3 {
-            font-family: var(--font-alt);
-            margin-top: 10px;
+        /* Tarjetas de Texto Estilo Neo-brutalista */
+        .content-card {
+            background: white;
+            padding: 30px;
+            max-width: 450px;
+            border: 3px solid var(--dark);
+            box-shadow: 8px 8px 0px var(--dark);
+        }
+
+        .content-card h1, .content-card h2 {
+            font-family: 'Comfortaa', cursive;
             margin-bottom: 15px;
-            font-size: 1.3rem;
-            color: var(--blue);
         }
 
-        /* ==========================================================================
-           11. FOOTER
-           ========================================================================== */
-        footer {
-            background-color: var(--dark);
-            color: var(--cream);
-            padding: 50px 5%;
-            text-align: center;
-            border-top: var(--border-thick);
-        }
-
-        .footer-logo {
-            font-family: var(--font-alt);
-            font-size: 2.2rem;
-            font-weight: 700;
-            display: block;
-            margin-bottom: 15px;
-            color: var(--yellow);
-            letter-spacing: -1px;
-        }
-
-        footer p {
-            font-size: 0.9rem;
-            opacity: 0.8;
-        }
-
-        /* ==========================================================================
-           12. MEDIA QUERIES (ADAPTABILIDAD MÓVIL)
-           ========================================================================== */
-        @media (max-width: 900px) {
-            .hero {
-                grid-template-columns: 1fr;
-                text-align: center;
-                padding-top: 40px;
-                min-height: auto;
-            }
-            
-            .hero-text h1 {
-                font-size: 2.8rem;
-            }
-            
-            .hero-text p {
-                margin: 20px auto 30px;
-            }
-
-            .hero-image {
-                margin-top: 20px;
-            }
-
-            .about-container {
-                grid-template-columns: 1fr;
-                gap: 40px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .process-timeline {
-                grid-template-columns: 1fr;
-                gap: 50px;
-            }
-            .step-number {
-                top: -20px;
-            }
-        }
-
-        @media (max-width: 600px) {
-            header {
-                flex-direction: column;
-                gap: 20px;
-            }
-
-            nav a {
-                margin: 0 12px;
-            }
-
-            .slogan-banner h2 {
-                font-size: 1.4rem;
-            }
-
-            .about-title {
-                font-size: 2.2rem;
-            }
+        .content-card p {
+            font-size: 0.95rem;
+            line-height: 1.6;
         }
     </style>
 </head>
 <body>
 
-    <!-- NAVEGACIÓN -->
-    <header>
-        <a href="#" class="logo-text">CEEN</a>
-        <nav>
-            <a href="#estudio">Estudio</a>
-            <a href="#servicios">Servicios</a>
-            <a href="#portfolio">Portafolio</a>
-            <a href="mailto:contacto@ceen.com" class="btn btn-sm">Contacto</a>
-        </nav>
-    </header>
+    <div class="tesis-badge">MÓDULO DE PRUEBA: NARRATIVA SCROLL-DRIVEN</div>
 
-    <!-- HERO SECTION -->
-    <section class="hero">
-        <div class="hero-text">
-            <h1>Design <span>Studio</span></h1>
-            <p>Soluciones integrales de diseño que responden a las necesidades actuales del mercado. Creamos la imagen que genera confianza, reconocimiento y presencia digital.</p>
-            <a href="#portfolio" class="btn">Explorar Trabajo</a>
+    <div class="stage-container">
+        <div class="canvas-simulado">
+            <div class="personaje-avatar" id="personaje">CEEN</div>
+            <div class="bloque-logo" id="logo">LOGOTIPO</div>
         </div>
-        <div class="hero-image">
-            <!-- Nota: Cuando exportes la imagen de los bloques 3D de "CEEN identidad visual (5).jpg", reemplaza este div por tu etiqueta <img src="..."> -->
-            <div class="logo-placeholder">
-                [ Logotipo Principal CEEN 3D ]
-            </div>
-        </div>
-    </section>
+    </div>
 
-    <!-- BANNER DE SLOGAN -->
-    <section class="slogan-banner">
-        <h2>“Crea emociones, expresa narrativas.”</h2>
-    </section>
+    <main>
+        <div class="section-trigger" id="bloque1">
+            <div class="content-card">
+                <h1>01. Impacto Inmediato</h1>
+                <p>Estás en el estado inicial. Desliza suavemente hacia abajo para ver cómo el personaje interactúa físicamente con la marca de la agencia en tiempo real.</p>
+            </div>
+        </div>
 
-    <!-- SOBRE NOSOTROS (ESTUDIO) -->
-    <section class="about" id="estudio">
-        <div class="about-container">
-            <h2 class="about-title">Somos jóvenes,<br>somos creativos.</h2>
-            <p class="about-text">
-                En este contexto surge <strong>CEEN</strong>, una agencia de diseño conformada por jóvenes creativos apasionados por la innovación y la producción visual de calidad. Nos distinguimos por un estilo fresco, profesional y adaptable, enfocado en la creación y el fortalecimiento de marcas auténticas, atractivas y coherentes con la identidad de cada cliente.
-            </p>
+        <div class="section-trigger" id="bloque2">
+            <div class="content-card">
+                <h2>02. El Manifiesto</h2>
+                <p><strong>"Crea emociones, expresa narrativas."</strong><br>Al llegar aquí, el personaje ha completado su empuje dinámico alineando los bloques y el fondo muta para mitigar la carga cognitiva.</p>
+            </div>
         </div>
-    </section>
 
-    <!-- SERVICIOS -->
-    <section class="services" id="servicios">
-        <div class="section-header">
-            <h2>Soluciones Integrales</h2>
-            <p>Combinamos múltiples disciplinas creativas para ofrecer propuestas modernas y altamente competitivas.</p>
-        </div>
-        <div class="services-grid">
-            <div class="service-card">
-                <h3>Branding & Identidad</h3>
-                <p>Diseño gráfico, logotipos, submarks y sistemas visuales que estructuran y dotan de coherencia a tu marca.</p>
-            </div>
-            <div class="service-card">
-                <h3>Multimedia & Animación</h3>
-                <p>Ilustración, animación digital y producción multimedia diseñadas para impactar y capturar la atención actual.</p>
-            </div>
-            <div class="service-card">
-                <h3>Comunicación Digital</h3>
-                <p>Propuestas de diseño funcional adaptadas a las plataformas digitales modernas para generar confianza y presencia.</p>
+        <div class="section-trigger" id="bloque3">
+            <div class="content-card">
+                <h2>03. Respaldo Técnico</h2>
+                <p>Esta simulación demuestra la viabilidad de la teoría de interacción en un único ciclo de renderizado (SPA), respondiendo con latencia cero entre transiciones.</p>
             </div>
         </div>
-    </section>
+    </main>
 
-    <!-- PORTAFOLIO -->
-    <section class="portfolio" id="portfolio">
-        <div class="section-header">
-            <h2>Casos de Estudio</h2>
-            <p>Producción visual de alta calidad aplicada a productos, empaques y entornos editoriales.</p>
-        </div>
-        <div class="portfolio-grid">
-            <!-- Item 1: Mockup Poster -->
-            <div class="portfolio-item">
-                <div class="portfolio-thumb" style="background-color: var(--coral);">
-                    [ Mockup Póster / Identidad Corporativa ]
-                </div>
-                <div class="portfolio-info">
-                    <h3>Sistemas de Identidad</h3>
-                    <p>Desarrollo estricto de branding funcional y papelería corporativa.</p>
-                </div>
-            </div>
-            <!-- Item 2: Mockup Totebag -->
-            <div class="portfolio-item">
-                <div class="portfolio-thumb" style="background-color: var(--blue);">
-                    [ Mockup Bolsa Ecológica / Merchandising ]
-                </div>
-                <div class="portfolio-info">
-                    <h3>Producción de Assets</h3>
-                    <p>Adaptación de logotipos y elementos visuales a soportes físicos cotidianos.</p>
-                </div>
-            </div>
-            <!-- Item 3: Mockup Termo -->
-            <div class="portfolio-item">
-                <div class="portfolio-thumb" style="background-color: var(--yellow);">
-                    [ Mockup Botella / Diseño de Producto ]
-                </div>
-                <div class="portfolio-info">
-                    <h3>Presencia de Marca</h3>
-                    <p>Propuestas atractivas y dinámicas basadas en paletas cromáticas pop.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+    <script>
+        window.addEventListener('scroll', () => {
+            // Calcular el porcentaje de scroll exacto del usuario
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercent = scrollTop / docHeight;
 
-    <!-- PROCESO METODOLÓGICO -->
-    <section class="process">
-        <div class="section-header">
-            <h2>El Método CEEN</h2>
-            <p>Cómo estructuramos cada proyecto para responder ágilmente al mercado.</p>
-        </div>
-        <div class="process-timeline">
-            <div class="process-step">
-                <div class="step-number">01</div>
-                <h3>Inmersión</h3>
-                <p>Analizamos las necesidades del mercado y definimos la esencia narrativa que requiere tu marca.</p>
-            </div>
-            <div class="process-step">
-                <div class="step-number">02</div>
-                <h3>Concepto Visual</h3>
-                <p>Exploramos caminos atrevidos, ilustraciones, animaciones e ideas de branding con enfoque competitivo.</p>
-            </div>
-            <div class="process-step">
-                <div class="step-number">03</div>
-                <h3>Despliegue</h3>
-                <p>Materializamos la identidad final garantizando consistencia gráfica en todos tus canales digitales y físicos.</p>
-            </div>
-        </div>
-    </section>
+            // Elementos de la interfaz
+            const personaje = document.getElementById('personaje');
+            const logo = document.getElementById('logo');
+            const body = document.body;
 
-    <!-- FOOTER -->
-    <footer>
-        <div class="footer-content">
-            <span class="footer-logo">CEEN</span>
-            <p>© 2026 CEEN Design Studio. Conectando marcas, expresando narrativas.</p>
-        </div>
-    </footer>
+            // 1. Control de movimiento matemático coordinado (Simulación de la línea de tiempo)
+            // El personaje avanza desde -150px hasta aproximarse al bloque del logo (0px)
+            let personajeX = -150 + (scrollPercent * 150);
+            
+            // El logo es empujado: cambia su traslación conforme el personaje avanza
+            let logoX = 100 - (scrollPercent * 100);
 
+            // Aplicar las matrices de transformación en tiempo real
+            personaje.style.transform = `translateX(${personajeX}px) rotate(${scrollPercent * 360}deg)`;
+            logo.style.transform = `translateX(${logoX}px)`;
+
+            // 2. Control Dinámico de Entorno (Cambio de color por sección)
+            if (scrollPercent < 0.3) {
+                body.style.backgroundColor = '#F9F6F0'; // Crema inicial
+            } else if (scrollPercent >= 0.3 && scrollPercent < 0.7) {
+                body.style.backgroundColor = '#E8F1F5'; // Variación azulada suave
+            } else {
+                body.style.backgroundColor = '#FFFBEB'; // Variación amarilla suave
+            }
+        });
+    </script>
 </body>
 </html>
