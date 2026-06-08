@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CEEN - Prueba de Concepto Narrativo</title>
+    <title>CEEN - Agencia Multimedia (Prototipo de Interacción 2.5D)</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Poppins:wght@400;600;900&display=swap" rel="stylesheet">
 
     <style>
         :root {
@@ -15,6 +16,7 @@
             --azul: #4D96FF;
             --amarillo: #FFD93D;
             --dark: #1E1717;
+            --borde: 4px solid #1E1717;
         }
 
         * {
@@ -27,26 +29,28 @@
             font-family: 'Poppins', sans-serif;
             background-color: var(--bg-crema);
             color: var(--dark);
-            transition: background-color 0.5s ease;
             overflow-x: hidden;
+            transition: background-color 0.4s ease-out;
         }
 
-        /* Indicador flotante para la Tesis */
-        .tesis-badge {
+        /* Badge Académico para impresionar a los Sinodales */
+        .badge-universidad {
             position: fixed;
             top: 20px;
             left: 20px;
             background: var(--amarillo);
-            padding: 10px 15px;
-            border: 3px solid var(--dark);
-            box-shadow: 4px 4px 0px var(--dark);
+            border: var(--borde);
+            padding: 8px 16px;
             font-weight: 600;
-            font-size: 0.8rem;
-            z-index: 1000;
+            font-size: 0.75rem;
+            box-shadow: 4px 4px 0px var(--dark);
+            z-index: 100;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        /* Contenedor del Escenario Fijo (Igual que WebGPU) */
-        .stage-container {
+        /* Escenario Fijo de Animación (Simulación Isométrica) */
+        .viewport-stage {
             position: fixed;
             top: 0;
             left: 0;
@@ -55,158 +59,275 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            pointer-events: none; /* Permite escrolear a través de la escena */
+            pointer-events: none;
             z-index: 1;
         }
 
-        /* Simulación del Entorno Isométrico 3D */
-        .canvas-simulado {
+        .scene-25d {
             position: relative;
-            width: 500px;
-            height: 300px;
+            width: 600px;
+            height: 350px;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        /* Bloque del Logotipo CEEN */
-        .bloque-logo {
+        /* Bloque del Logotipo Isométrico */
+        .logo-block {
             position: absolute;
-            width: 180px;
-            height: 80px;
             background: var(--azul);
-            border: 4px solid var(--dark);
-            box-shadow: 8px 8px 0px var(--dark);
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            border: var(--borde);
+            padding: 20px 40px;
             font-family: 'Comfortaa', cursive;
-            font-size: 2rem;
+            font-size: 2.5rem;
             color: white;
-            transform: translate(100px, 0px); /* Posición desalineada inicial */
-            transition: transform 0.1s linear;
+            box-shadow: 10px 10px 0px var(--dark);
+            transform: translate(150px, -20px) skewY(-6deg); /* Inclinación isométrica artificial */
+            will-change: transform;
         }
 
-        /* El Personaje de la Agencia */
-        .personaje-avatar {
+        /* Avatar del Personaje de la Agencia */
+        .character-avatar {
             position: absolute;
-            width: 90px;
-            height: 90px;
+            width: 100px;
+            height: 100px;
             background: var(--coral);
-            border: 4px solid var(--dark);
+            border: var(--borde);
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-weight: bold;
+            font-weight: 900;
             color: white;
-            box-shadow: 4px 4px 0px var(--dark);
-            transform: translate(-150px, 0px); /* Posición inicial izquierda */
-            transition: transform 0.1s linear;
+            box-shadow: 5px 5px 0px var(--dark);
+            transform: translate(-200px, 0px);
+            will-change: transform;
         }
 
-        /* Secciones invisibles pero reales que dan la altura para el Scroll */
-        .section-trigger {
+        /* Estructura de Contenedores de Scroll Coherente con Nielsen (1997) */
+        .scroll-trigger-section {
             position: relative;
             height: 100vh;
             width: 100%;
             display: flex;
             align-items: center;
-            padding-left: 10%;
-            z-index: 2; /* Por encima del canvas para que sean legibles */
+            padding: 0 10%;
+            z-index: 2;
         }
 
-        .section-trigger:nth-child(even) {
+        .scroll-trigger-section:nth-child(even) {
             justify-content: flex-end;
-            padding-left: 0;
-            padding-right: 10%;
         }
 
-        /* Tarjetas de Texto Estilo Neo-brutalista */
-        .content-card {
+        /* Tarjetas de Texto Estilo Neo-brutalista Crudo */
+        .neobrutilism-card {
             background: white;
-            padding: 30px;
-            max-width: 450px;
-            border: 3px solid var(--dark);
-            box-shadow: 8px 8px 0px var(--dark);
+            border: var(--borde);
+            padding: 35px;
+            max-width: 480px;
+            box-shadow: 10px 10px 0px var(--dark);
+            pointer-events: auto; /* Permite interactuar con el mazo de tarjetas */
         }
 
-        .content-card h1, .content-card h2 {
+        .neobrutilism-card h2 {
             font-family: 'Comfortaa', cursive;
+            font-size: 1.8rem;
             margin-bottom: 15px;
+            text-transform: lowercase;
         }
 
-        .content-card p {
+        .neobrutilism-card p {
             font-size: 0.95rem;
-            line-height: 1.6;
+            line-height: 1.7;
+            color: #444;
+        }
+
+        /* Bloque 3: Mazo de Tarjetas Corporativas Modulares */
+        .grid-cards-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            width: 100%;
+            max-width: 1100px;
+            pointer-events: auto;
+        }
+
+        .corporate-pill-card {
+            background: white;
+            border: var(--borde);
+            padding: 30px;
+            box-shadow: 6px 6px 0px var(--dark);
+            transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.15s ease;
+            cursor: pointer;
+        }
+
+        /* Mecánica Hover 2D Desplazada (Simula relieve con cero consumo) */
+        .corporate-pill-card:hover {
+            transform: translate(-8px, -8px);
+            box-shadow: 14px 14px 0px var(--dark);
+            background: var(--amarillo);
+        }
+
+        .corporate-pill-card h3 {
+            font-family: 'Comfortaa', cursive;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        /* Bloque 4: Grid del Portafolio con Parallax Bidimensional */
+        .portfolio-gallery {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            max-width: 900px;
+            width: 100%;
+            pointer-events: auto;
+        }
+
+        .portfolio-item {
+            background: white;
+            border: var(--borde);
+            height: 260px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 8px 8px 0px var(--dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .portfolio-mockup {
+            width: 80%;
+            height: 70%;
+            border: 3px dashed var(--dark);
+            background: #eee;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 600;
+            transition: transform 0.2s ease-out; /* Parallax 2D */
+        }
+
+        .portfolio-item:hover .portfolio-mockup {
+            background: var(--azul);
+            color: white;
+            border-style: solid;
         }
     </style>
 </head>
 <body>
 
-    <div class="tesis-badge">MÓDULO DE PRUEBA: NARRATIVA SCROLL-DRIVEN</div>
+    <div class="badge-universidad">CEEN • Validación de Interacción 2.5D</div>
 
-    <div class="stage-container">
-        <div class="canvas-simulado">
-            <div class="personaje-avatar" id="personaje">CEEN</div>
-            <div class="bloque-logo" id="logo">LOGOTIPO</div>
+    <div class="viewport-stage">
+        <div class="scene-25d">
+            <div class="character-avatar" id="avatar">CEEN</div>
+            <div class="logo-block" id="logotipo">ceen_</div>
         </div>
     </div>
 
     <main>
-        <div class="section-trigger" id="bloque1">
-            <div class="content-card">
-                <h1>01. Impacto Inmediato</h1>
-                <p>Estás en el estado inicial. Desliza suavemente hacia abajo para ver cómo el personaje interactúa físicamente con la marca de la agencia en tiempo real.</p>
+        
+        <section class="scroll-trigger-section">
+            <div class="neobrutilism-card">
+                <h2>01. hero section</h2>
+                <p>Estás en el estado inicial de la narrativa visual. Desliza suavemente la página hacia abajo para observar cómo el personaje se desplaza físicamente y colisiona de forma controlada con el logotipo para alinearlo.</p>
             </div>
-        </div>
+        </section>
 
-        <div class="section-trigger" id="bloque2">
-            <div class="content-card">
-                <h2>02. El Manifiesto</h2>
-                <p><strong>"Crea emociones, expresa narrativas."</strong><br>Al llegar aquí, el personaje ha completado su empuje dinámico alineando los bloques y el fondo muta para mitigar la carga cognitiva.</p>
+        <section class="scroll-trigger-section">
+            <div class="neobrutilism-card">
+                <h2>02. el manifiesto</h2>
+                <p><strong>"Crea emociones, expresa narrativas."</strong><br>Al alcanzar este punto de anclaje, el logotipo ha quedado perfectamente unificado. El color de fondo de la aplicación cambia de manera sutil para refrescar el flujo visual del usuario.</p>
             </div>
-        </div>
+        </section>
 
-        <div class="section-trigger" id="bloque3">
-            <div class="content-card">
-                <h2>03. Respaldo Técnico</h2>
-                <p>Esta simulación demuestra la viabilidad de la teoría de interacción en un único ciclo de renderizado (SPA), respondiendo con latencia cero entre transiciones.</p>
+        <section class="scroll-trigger-section" style="justify-content: center; padding: 0 5%;">
+            <div class="grid-cards-container">
+                <div class="corporate-pill-card">
+                    <h3>misión</h3>
+                    <p>Ofrecer soluciones de comunicación visual y multimedia de vanguardia que doten de autenticidad y poder digital a las marcas emergentes.</p>
+                </div>
+                <div class="corporate-pill-card">
+                    <h3>visión</h3>
+                    <p>Consolidar a CEEN como la agencia multimedia de referencia pop-moderna y disruptiva para el mercado nacional e internacional.</p>
+                </div>
+                <div class="corporate-pill-card">
+                    <h3>valores</h3>
+                    <p>Innovación constante, rigor técnico de rendimiento, disrupción estética y compromiso con la narrativa de cada cliente.</p>
+                </div>
             </div>
-        </div>
+        </section>
+
+        <section class="scroll-trigger-section" style="justify-content: center;">
+            <div class="portfolio-gallery">
+                <div class="portfolio-item">
+                    <div class="portfolio-mockup">[póster rosa]</div>
+                </div>
+                <div class="portfolio-item">
+                    <div class="portfolio-mockup">[bolsa totebag]</div>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <script>
+        // 1. Control del Entorno Continuo (Scroll-Driven Controller)
         window.addEventListener('scroll', () => {
-            // Calcular el porcentaje de scroll exacto del usuario
             const scrollTop = window.scrollY;
             const docHeight = document.documentElement.scrollHeight - window.innerHeight;
             const scrollPercent = scrollTop / docHeight;
 
-            // Elementos de la interfaz
-            const personaje = document.getElementById('personaje');
-            const logo = document.getElementById('logo');
+            const avatar = document.getElementById('avatar');
+            const logotipo = document.getElementById('logotipo');
             const body = document.body;
 
-            // 1. Control de movimiento matemático coordinado (Simulación de la línea de tiempo)
-            // El personaje avanza desde -150px hasta aproximarse al bloque del logo (0px)
-            let personajeX = -150 + (scrollPercent * 150);
-            
-            // El logo es empujado: cambia su traslación conforme el personaje avanza
-            let logoX = 100 - (scrollPercent * 100);
+            // Lógica de traducción de movimiento en ejes X e Y
+            // El avatar se desplaza hacia el centro (-200px a 0px) y rota
+            let avatarX = -200 + (scrollPercent * 200);
+            let avatarRot = scrollPercent * 360;
 
-            // Aplicar las matrices de transformación en tiempo real
-            personaje.style.transform = `translateX(${personajeX}px) rotate(${scrollPercent * 360}deg)`;
-            logo.style.transform = `translateX(${logoX}px)`;
+            // El logotipo es empujado y alineado (pasa de 150px a la posición central 0px)
+            let logoX = 150 - (scrollPercent * 150);
+            let logoSkew = -6 + (scrollPercent * 6); // Pierde la inclinación isométrica cruda al unificarse
 
-            // 2. Control Dinámico de Entorno (Cambio de color por sección)
-            if (scrollPercent < 0.3) {
-                body.style.backgroundColor = '#F9F6F0'; // Crema inicial
-            } else if (scrollPercent >= 0.3 && scrollPercent < 0.7) {
-                body.style.backgroundColor = '#E8F1F5'; // Variación azulada suave
+            // Inyección de estilos directos al hardware de renderizado del navegador
+            avatar.style.transform = `translateX(${avatarX}px) rotate(${avatarRot}deg)`;
+            logotipo.style.transform = `translateX(${logoX}px) skewY(${logoSkew}deg)`;
+
+            // 2. Transiciones Cromáticas de Fondo por Secciones (Mitigación de Latencia Perceptual)
+            if (scrollPercent < 0.25) {
+                body.style.backgroundColor = '#F9F6F0'; // Crema
+            } else if (scrollPercent >= 0.25 && scrollPercent < 0.6) {
+                body.style.backgroundColor = '#E8F1F5'; // Azul suave
+            } else if (scrollPercent >= 0.6 && scrollPercent < 0.85) {
+                body.style.backgroundColor = '#FFFBEB'; // Amarillo suave
             } else {
-                body.style.backgroundColor = '#FFFBEB'; // Variación amarilla suave
+                body.style.backgroundColor = '#FFEAEA'; // Coral suave para el portafolio
             }
+        });
+
+        // 3. Mecánica de Parallax Bidimensional para el Portafolio (Efecto de Relieve 2D)
+        const items = document.querySelectorAll('.portfolio-item');
+        items.forEach(item => {
+            const mockup = item.querySelector('.portfolio-mockup');
+            
+            item.addEventListener('mousemove', (e) => {
+                const rect = item.getBoundingClientRect();
+                // Calcular la posición del mouse relativa a la tarjeta
+                const x = e.clientX - rect.left - (rect.width / 2);
+                const y = e.clientY - rect.top - (rect.height / 2);
+                
+                // Desplazar el contenedor interno en dirección opuesta (efecto relieve)
+                mockup.style.transform = `translate(${-x * 0.15}px, ${-y * 0.15}px)`;
+            });
+
+            item.addEventListener('mouseleave', () => {
+                // Regresar a la posición original suavemente
+                mockup.style.transform = 'translate(0px, 0px)';
+            });
         });
     </script>
 </body>
