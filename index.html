@@ -3,331 +3,323 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CEEN - Agencia Multimedia (Prototipo de Interacción 2.5D)</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Poppins:wght@400;600;900&display=swap" rel="stylesheet">
-
+    <title>CEEN - Storyboard Interactivo MVP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-crema: #F9F6F0;
+            --bg-crema: #FFFDF9;
+            --dark: #1E1717;
             --coral: #FF6B6B;
             --azul: #4D96FF;
             --amarillo: #FFD93D;
-            --dark: #1E1717;
-            --borde: 4px solid #1E1717;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
             background-color: var(--bg-crema);
             color: var(--dark);
+            /* Altura artificial para generar espacio de scroll controlable */
+            height: 500vh; 
             overflow-x: hidden;
-            transition: background-color 0.4s ease-out;
         }
 
-        /* Badge Académico para impresionar a los Sinodales */
-        .badge-universidad {
+        /* Indicador de Progreso para la Tesis */
+        .scroll-indicator {
             position: fixed;
             top: 20px;
             left: 20px;
-            background: var(--amarillo);
-            border: var(--borde);
-            padding: 8px 16px;
+            background: var(--dark);
+            color: var(--bg-crema);
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-size: 0.85rem;
             font-weight: 600;
-            font-size: 0.75rem;
-            box-shadow: 4px 4px 0px var(--dark);
-            z-index: 100;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            z-index: 1000;
+            border: 2px solid var(--amarillo);
         }
 
-        /* Escenario Fijo de Animación (Simulación Isométrica) */
-        .viewport-stage {
+        /* El Lienzo Fijo (Viewport Único) */
+        .storyboard-canvas {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
+            width: 100vw;
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             pointer-events: none;
-            z-index: 1;
+            transition: background-color 0.4s ease;
         }
 
-        .scene-25d {
-            position: relative;
-            width: 600px;
-            height: 350px;
+        /* --- ELEMENTOS DEL HERO (Keyframe 0 y 1) --- */
+        .hero-container {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 1200px;
+            height: 100%;
+        }
+
+        /* Personaje Vectorial Simulado */
+        .character-svg {
+            position: absolute;
+            left: 15%;
+            width: 120px;
+            height: 150px;
+            background-color: var(--coral);
+            border: 4px solid var(--dark);
+            border-radius: 20px;
             display: flex;
             justify-content: center;
             align-items: center;
-        }
-
-        /* Bloque del Logotipo Isométrico */
-        .logo-block {
-            position: absolute;
-            background: var(--azul);
-            border: var(--borde);
-            padding: 20px 40px;
-            font-family: 'Comfortaa', cursive;
-            font-size: 2.5rem;
-            color: white;
-            box-shadow: 10px 10px 0px var(--dark);
-            transform: translate(150px, -20px) skewY(-6deg); /* Inclinación isométrica artificial */
-            will-change: transform;
-        }
-
-        /* Avatar del Personaje de la Agencia */
-        .character-avatar {
-            position: absolute;
-            width: 100px;
-            height: 100px;
-            background: var(--coral);
-            border: var(--borde);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-weight: 900;
-            color: white;
+            font-weight: bold;
             box-shadow: 5px 5px 0px var(--dark);
-            transform: translate(-200px, 0px);
-            will-change: transform;
+            transform: translateX(0px) rotate(0deg);
+            z-index: 10;
         }
 
-        /* Estructura de Contenedores de Scroll Coherente con Nielsen (1997) */
-        .scroll-trigger-section {
-            position: relative;
-            height: 100vh;
-            width: 100%;
+        /* Logotipo Desglosado */
+        .logo-isometric {
             display: flex;
-            align-items: center;
-            padding: 0 10%;
-            z-index: 2;
-        }
-
-        .scroll-trigger-section:nth-child(even) {
-            justify-content: flex-end;
-        }
-
-        /* Tarjetas de Texto Estilo Neo-brutalista Crudo */
-        .neobrutilism-card {
-            background: white;
-            border: var(--borde);
-            padding: 35px;
-            max-width: 480px;
-            box-shadow: 10px 10px 0px var(--dark);
-            pointer-events: auto; /* Permite interactuar con el mazo de tarjetas */
-        }
-
-        .neobrutilism-card h2 {
+            gap: 60px;
             font-family: 'Comfortaa', cursive;
-            font-size: 1.8rem;
-            margin-bottom: 15px;
-            text-transform: lowercase;
+            font-size: 5rem;
+            z-index: 5;
         }
 
-        .neobrutilism-card p {
-            font-size: 0.95rem;
-            line-height: 1.7;
-            color: #444;
-        }
-
-        /* Bloque 3: Mazo de Tarjetas Corporativas Modulares */
-        .grid-cards-container {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            width: 100%;
-            max-width: 1100px;
-            pointer-events: auto;
-        }
-
-        .corporate-pill-card {
-            background: white;
-            border: var(--borde);
-            padding: 30px;
-            box-shadow: 6px 6px 0px var(--dark);
-            transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.15s ease;
-            cursor: pointer;
-        }
-
-        /* Mecánica Hover 2D Desplazada (Simula relieve con cero consumo) */
-        .corporate-pill-card:hover {
-            transform: translate(-8px, -8px);
-            box-shadow: 14px 14px 0px var(--dark);
+        .letter {
+            display: inline-block;
             background: var(--amarillo);
-        }
-
-        .corporate-pill-card h3 {
-            font-family: 'Comfortaa', cursive;
-            margin-bottom: 10px;
-            font-size: 1.3rem;
-        }
-
-        /* Bloque 4: Grid del Portafolio con Parallax Bidimensional */
-        .portfolio-gallery {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 30px;
-            max-width: 900px;
-            width: 100%;
-            pointer-events: auto;
-        }
-
-        .portfolio-item {
-            background: white;
-            border: var(--borde);
-            height: 260px;
-            position: relative;
-            overflow: hidden;
+            padding: 10px 25px;
+            border: 4px solid var(--dark);
             box-shadow: 8px 8px 0px var(--dark);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
+            transform: skewY(-10deg) translateY(0px);
+            transition: transform 0.1s ease-out;
         }
 
-        .portfolio-mockup {
-            width: 80%;
-            height: 70%;
-            border: 3px dashed var(--dark);
-            background: #eee;
+        /* --- BARRIDA NEO-BRUTALISTA (Keyframe 2) --- */
+        .manifesto-section {
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
+            background-color: var(--azul);
+            border-top: 6px solid var(--dark);
+            transform: translateY(100vh);
             display: flex;
             justify-content: center;
             align-items: center;
+            padding: 40px;
+            z-index: 20;
+        }
+
+        .manifesto-text {
+            font-family: 'Comfortaa', cursive;
+            font-size: 3.5rem;
+            color: var(--bg-crema);
+            text-align: center;
+            text-shadow: 4px 4px 0px var(--dark);
+            max-width: 800px;
+            /* Máscara de recorte inicial para revelar */
+            clip-path: polygon(0 0, 0 0, 0 100%, 0% 100%);
+        }
+
+        /* --- TARJETAS CORPORATIVAS (Keyframe 3) --- */
+        .cards-container {
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            padding: 50px;
+            transform: translateY(100vh);
+            z-index: 30;
+            pointer-events: auto; /* Permitir eventos hover */
+        }
+
+        .card {
+            background: white;
+            border: 4px solid var(--dark);
+            padding: 30px;
+            width: 300px;
+            height: 380px;
+            box-shadow: 10px 10px 0px var(--dark);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        /* Interacción Hover 2D Desplazada (Consumo 0% GPU) */
+        .card:hover {
+            transform: translate(-8px, -8px);
+            box-shadow: 18px 18px 0px var(--dark);
+            background-color: var(--bg-crema);
+        }
+
+        .card h3 {
+            font-family: 'Comfortaa', cursive;
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+            border-bottom: 3px solid var(--dark);
+            padding-bottom: 5px;
+        }
+
+        /* Instrucción de Scroll inferior */
+        .scroll-hint {
+            position: fixed;
+            bottom: 30px;
+            font-size: 0.9rem;
             font-weight: 600;
-            transition: transform 0.2s ease-out; /* Parallax 2D */
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            animation: bounce 2xl infinite;
+            z-index: 5;
         }
 
-        .portfolio-item:hover .portfolio-mockup {
-            background: var(--azul);
-            color: white;
-            border-style: solid;
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
     </style>
 </head>
 <body>
 
-    <div class="badge-universidad">CEEN • Validación de Interacción 2.5D</div>
+    <div class="scroll-indicator" id="indicator">Scroll: 0%</div>
+    
+    <div class="scroll-hint" id="hint">Desliza hacia abajo ↓</div>
 
-    <div class="viewport-stage">
-        <div class="scene-25d">
-            <div class="character-avatar" id="avatar">CEEN</div>
-            <div class="logo-block" id="logotipo">ceen_</div>
+    <div class="storyboard-canvas" id="canvas">
+        
+        <div class="hero-container" id="hero">
+            <div class="character-svg" id="character">CEEN Character</div>
+            <div class="logo-isometric">
+                <span class="letter" id="l1" style="background-color: #FF6B6B;">C</span>
+                <span class="letter" id="l2" style="background-color: #4D96FF;">E</span>
+                <span class="letter" id="l3" style="background-color: #FFD93D;">E</span>
+                <span class="letter" id="l4" style="background-color: #6BCB77;">N</span>
+            </div>
         </div>
+
+        <div class="manifesto-section" id="manifestoSection">
+            <h2 class="manifesto-text" id="manifestoText">Crea emociones, expresa narrativas.</h2>
+        </div>
+
+        <div class="cards-container" id="cardsSection">
+            <div class="card">
+                <h3>Misión</h3>
+                <p>Ofrecer soluciones integrales de diseño multimedia que respondan a las necesidades actuales del mercado digital, generando confianza y valor de marca.</p>
+            </div>
+            <div class="card">
+                <h3>Visión</h3>
+                <p>Consolidarnos como la agencia creativa de vanguardia referente para el ecosistema pop-moderno, combinando interactividad y optimización técnica extrema.</p>
+            </div>
+            <div class="card">
+                <h3>Valores</h3>
+                <p>Innovación disruptiva, rigor geométrico, claridad en la arquitectura de información y empatía en la experiencia del usuario (UX).</p>
+            </div>
+        </div>
+
     </div>
 
-    <main>
-        
-        <section class="scroll-trigger-section">
-            <div class="neobrutilism-card">
-                <h2>01. hero section</h2>
-                <p>Estás en el estado inicial de la narrativa visual. Desliza suavemente la página hacia abajo para observar cómo el personaje se desplaza físicamente y colisiona de forma controlada con el logotipo para alinearlo.</p>
-            </div>
-        </section>
-
-        <section class="scroll-trigger-section">
-            <div class="neobrutilism-card">
-                <h2>02. el manifiesto</h2>
-                <p><strong>"Crea emociones, expresa narrativas."</strong><br>Al alcanzar este punto de anclaje, el logotipo ha quedado perfectamente unificado. El color de fondo de la aplicación cambia de manera sutil para refrescar el flujo visual del usuario.</p>
-            </div>
-        </section>
-
-        <section class="scroll-trigger-section" style="justify-content: center; padding: 0 5%;">
-            <div class="grid-cards-container">
-                <div class="corporate-pill-card">
-                    <h3>misión</h3>
-                    <p>Ofrecer soluciones de comunicación visual y multimedia de vanguardia que doten de autenticidad y poder digital a las marcas emergentes.</p>
-                </div>
-                <div class="corporate-pill-card">
-                    <h3>visión</h3>
-                    <p>Consolidar a CEEN como la agencia multimedia de referencia pop-moderna y disruptiva para el mercado nacional e internacional.</p>
-                </div>
-                <div class="corporate-pill-card">
-                    <h3>valores</h3>
-                    <p>Innovación constante, rigor técnico de rendimiento, disrupción estética y compromiso con la narrativa de cada cliente.</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="scroll-trigger-section" style="justify-content: center;">
-            <div class="portfolio-gallery">
-                <div class="portfolio-item">
-                    <div class="portfolio-mockup">[póster rosa]</div>
-                </div>
-                <div class="portfolio-item">
-                    <div class="portfolio-mockup">[bolsa totebag]</div>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
     <script>
-        // 1. Control del Entorno Continuo (Scroll-Driven Controller)
+        const body = document.body;
+        const indicator = document.getElementById('indicator');
+        const hint = document.getElementById('hint');
+        
+        // Elementos del DOM a manipular basados en el scroll
+        const character = document.getElementById('character');
+        const l1 = document.getElementById('l1');
+        const l2 = document.getElementById('l2');
+        const l3 = document.getElementById('l3');
+        const l4 = document.getElementById('l4');
+        
+        const manifestoSection = document.getElementById('manifestoSection');
+        const manifestoText = document.getElementById('manifestoText');
+        const cardsSection = document.getElementById('cardsSection');
+
         window.addEventListener('scroll', () => {
+            // Calcular el progreso del scroll actual en porcentaje (0 a 100)
             const scrollTop = window.scrollY;
-            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-            const scrollPercent = scrollTop / docHeight;
-
-            const avatar = document.getElementById('avatar');
-            const logotipo = document.getElementById('logotipo');
-            const body = document.body;
-
-            // Lógica de traducción de movimiento en ejes X e Y
-            // El avatar se desplaza hacia el centro (-200px a 0px) y rota
-            let avatarX = -200 + (scrollPercent * 200);
-            let avatarRot = scrollPercent * 360;
-
-            // El logotipo es empujado y alineado (pasa de 150px a la posición central 0px)
-            let logoX = 150 - (scrollPercent * 150);
-            let logoSkew = -6 + (scrollPercent * 6); // Pierde la inclinación isométrica cruda al unificarse
-
-            // Inyección de estilos directos al hardware de renderizado del navegador
-            avatar.style.transform = `translateX(${avatarX}px) rotate(${avatarRot}deg)`;
-            logotipo.style.transform = `translateX(${logoX}px) skewY(${logoSkew}deg)`;
-
-            // 2. Transiciones Cromáticas de Fondo por Secciones (Mitigación de Latencia Perceptual)
-            if (scrollPercent < 0.25) {
-                body.style.backgroundColor = '#F9F6F0'; // Crema
-            } else if (scrollPercent >= 0.25 && scrollPercent < 0.6) {
-                body.style.backgroundColor = '#E8F1F5'; // Azul suave
-            } else if (scrollPercent >= 0.6 && scrollPercent < 0.85) {
-                body.style.backgroundColor = '#FFFBEB'; // Amarillo suave
-            } else {
-                body.style.backgroundColor = '#FFEAEA'; // Coral suave para el portafolio
-            }
-        });
-
-        // 3. Mecánica de Parallax Bidimensional para el Portafolio (Efecto de Relieve 2D)
-        const items = document.querySelectorAll('.portfolio-item');
-        items.forEach(item => {
-            const mockup = item.querySelector('.portfolio-mockup');
+            const docHeight = body.scrollHeight - window.innerHeight;
+            const scrollPercent = Math.min(Math.max((scrollTop / docHeight) * 100, 0), 100);
             
-            item.addEventListener('mousemove', (e) => {
-                const rect = item.getBoundingClientRect();
-                // Calcular la posición del mouse relativa a la tarjeta
-                const x = e.clientX - rect.left - (rect.width / 2);
-                const y = e.clientY - rect.top - (rect.height / 2);
-                
-                // Desplazar el contenedor interno en dirección opuesta (efecto relieve)
-                mockup.style.transform = `translate(${-x * 0.15}px, ${-y * 0.15}px)`;
-            });
+            // Actualizar indicador visual
+            indicator.innerText = `Scroll: ${Math.floor(scrollPercent)}%`;
 
-            item.addEventListener('mouseleave', () => {
-                // Regresar a la posición original suavemente
-                mockup.style.transform = 'translate(0px, 0px)';
-            });
+            if (scrollPercent > 5) {
+                hint.style.opacity = '0';
+            } else {
+                hint.style.opacity = '1';
+            }
+
+            // ==========================================
+            // ETAPA 1: Movimiento del Personaje y Alineación del Logo (0% a 30%)
+            // ==========================================
+            if (scrollPercent <= 30) {
+                // Mapear el scroll al desplazamiento horizontal del personaje
+                // Multiplicamos por 15 para acelerar el desplazamiento sobre el eje X
+                let charX = scrollPercent * 15; 
+                let charRot = scrollPercent * 2; // Ligera rotación orgánica al avanzar
+                character.style.transform = `translateX(${charX}px) rotate(${charRot}deg)`;
+                
+                // Desalineación inicial matemática de las letras en el eje Y
+                l1.style.transform = `skewY(-10deg) translateY(${-50 + (scrollPercent * 1.6)}px)`;
+                l2.style.transform = `skewY(-10deg) translateY(${60 - (scrollPercent * 2)}px)`;
+                l3.style.transform = `skewY(-10deg) translateY(${-40 + (scrollPercent * 1.3)}px)`;
+                l4.style.transform = `skewY(-10deg) translateY(${30 - (scrollPercent * 1)}px)`;
+                
+                // Asegurar que el bloque 2 esté oculto
+                manifestoSection.style.transform = `translateY(100vh)`;
+            } 
+            // Bloqueo de seguridad cuando pasa la animación del logo
+            else if (scrollPercent > 30 && scrollPercent <= 35) {
+                character.style.transform = `translateX(${30 * 15}px) rotate(${30 * 2}deg)`;
+                l1.style.transform = `skewY(-10deg) translateY(0px)`;
+                l2.style.transform = `skewY(-10deg) translateY(0px)`;
+                l3.style.transform = `skewY(-10deg) translateY(0px)`;
+                l4.style.transform = `skewY(-10deg) translateY(0px)`;
+            }
+
+            // ==========================================
+            // ETAPA 2: Barrida del Manifiesto (35% a 65%)
+            // ==========================================
+            if (scrollPercent > 35 && scrollPercent <= 65) {
+                // Calcular progreso interno del bloque (de 0 a 1)
+                let stageProgress = (scrollPercent - 35) / 30; 
+                
+                // Mover la sección de abajo hacia arriba (de 100vh a 0vh)
+                let translateY = 100 - (stageProgress * 100);
+                manifestoSection.style.transform = `translateY(${translateY}vh)`;
+                
+                // Revelado progresivo del texto con clip-path (Efecto máscara de entrada)
+                let textReveal = stageProgress * 100;
+                manifestoText.style.clipPath = `polygon(0 0, ${textReveal}% 0, ${textReveal}% 100%, 0% 100%)`;
+                
+                // Mantener limpias las tarjetas
+                cardsSection.style.transform = `translateY(100vh)`;
+            } else if (scrollPercent > 65) {
+                manifestoSection.style.transform = `translateY(0vh)`;
+                manifestoText.style.clipPath = `polygon(0 0, 100% 0, 100% 100%, 0% 100%)`;
+            }
+
+            // ==========================================
+            // ETAPA 3: Entrada de Tarjetas Corporativas (65% a 100%)
+            // ==========================================
+            if (scrollPercent > 65) {
+                let stageProgress = (scrollPercent - 65) / 35;
+                
+                // Desplazar las tarjetas sobreponiéndose a la sección azul
+                let translateY = 100 - (stageProgress * 100);
+                cardsSection.style.transform = `translateY(${translateY}vh)`;
+            }
         });
     </script>
 </body>
