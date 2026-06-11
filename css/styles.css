@@ -29,3 +29,63 @@ html, body {
     height: 100% !important;
     transform: scale(1.01); /* Truco multimedia: un ligero escalado elimina cualquier imperfección de borde de 1px */
 }
+/* Botón Flotante Neo-brutalista Solapado */
+#btn-final {
+  position: fixed;   /* Lo despega del flujo y lo deja flotando en la pantalla */
+  bottom: 50%;       /* Lo posiciona a un 10% de distancia del borde inferior */
+  left: 50%;         /* Lo mueve al centro horizontal */
+  transform: translateX(-50%) translateY(-20%); /* Lo centra perfectamente y lo baja un poco para la animación */
+  
+  /* Capas e Identidad visual */
+  z-index: 99999;    /* 👈 CRUCIAL: Fuerza al botón a estar por encima de los vectores del SVG de Lottie */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px 32px;
+  
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #000000;
+  background-color: #FFDE4D; /* Amarillo institucional */
+  border: 4px solid #000000;
+  box-shadow: 6px 6px 0px #000000;
+  cursor: pointer;
+}
+
+/* Estado Oculto (Mantiene el solapamiento pero en transparencia) */
+#btn-final.oculto {
+  opacity: 0;
+  pointer-events: none;
+  /* Al combinar transiciones, la animación al aparecer será súper fluida */
+  transition: opacity 0.4s ease, transform 0.4s ease; 
+}
+
+/* Estado Visible (Activado al final de la animación) */
+#btn-final.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(-40%); /* Lo sube suavemente a su posición final centrada */
+  transition: opacity 0.2s ease, transform 0.2s ease; /* Sube suavemente a su posición final centrada */
+}
+
+/* Microinteracciones Brutalistas en Hover */
+#btn-final:hover {
+  transform: translateX(-50%) translate(2px, 2px);
+  box-shadow: 4px 4px 0px #000000;
+  background-color: #ffffff;
+}
+#btn-final:active {
+  transform: translateX(-50%) translate(6px, 6px);
+  box-shadow: 0px 0px 0px #000000;
+}
+#btn-final .flecha {
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+#btn-final:hover .flecha {
+  transform: translateX(5px);
+}
