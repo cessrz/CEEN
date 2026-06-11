@@ -6,7 +6,7 @@ var animation = lottie.loadAnimation({
     renderer: 'svg',
     loop: false,
     autoplay: false,
-    path: '/js/data45.json', 
+    path: './js/data45.json', 
     rendererSettings: {
         // 'slice' expande el SVG eliminando bordes laterales, actuando como un background-size: cover
         preserveAspectRatio: 'xMidYMid slice',
