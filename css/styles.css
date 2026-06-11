@@ -1,0 +1,31 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 800vh; 
+    overflow-x: hidden; /* Bloquea fugas visuales hacia los lados */
+    background-color: #FFFDF9; /* Pon aquí el color exacto del fondo de tu video */
+}
+
+#bm {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+    overflow: hidden;
+}
+
+/* Forzado absoluto para romper restricciones del JSON */
+#bm svg {
+    width: 100% !important;
+    height: 100% !important;
+    transform: scale(1.01); /* Truco multimedia: un ligero escalado elimina cualquier imperfección de borde de 1px */
+}

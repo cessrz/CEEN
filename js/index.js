@@ -1,35 +1,43 @@
 document.addEventListener("DOMContentLoaded", function () {
     
-    // 1. Inicializamos Lottie de forma normal, pero desactivamos el autoplay
-    var animation = lottie.loadAnimation({
-        container: document.getElementById('bm'),
-        renderer: 'svg',
-        loop: false, // Importante: falso para que no se cicle sola
-        autoplay: false, // Importante: falso para que dependa del scroll
-        path: './js/data.json' // Asegúrate de cambiar esto por tu JSON real
-    });
-
-    // 2. Esperamos a que la animación termine de cargar su estructura interna
+    // 1. Inicializamos Lottie desactivando el autoplay
+var animation = lottie.loadAnimation({
+    container: document.getElementById('bm'),
+    renderer: 'svg',
+    loop: false,
+    autoplay: false,
+    path: './js/data2.json', 
+    rendererSettings: {
+        // 'slice' expande el SVG eliminando bordes laterales, actuando como un background-size: cover
+        preserveAspectRatio: 'xMidYMid slice',
+        className: 'lottie-svg-canvas'
+    }
+});
+    // 2. Esperamos a que la animación termine de cargar
     animation.addEventListener('DOMLoaded', function () {
-        console.log("Animación lista para el scroll.");
+        console.log("Animación lista. Espacio de control extendido a 8 pantallas.");
 
-        // Escuchamos el evento de scroll en la ventana del navegador
         window.addEventListener('scroll', function () {
             
-            // Calculamos cuánto ha bajado el usuario en total
+            // Posición actual del scroll del usuario
             var scrollTop = window.scrollY || document.documentElement.scrollTop;
             
-            // Calculamos el máximo scroll posible de la página actual
-            var maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+            // Medimos cuánto mide la ventana actual del usuario en píxeles (1vh)
+            var windowHeight = window.innerHeight;
             
-            // Obtenemos el porcentaje de scroll (un valor entre 0 y 1)
-            var scrollPercent = scrollTop / maxScroll;
+            // Definimos la distancia exacta de control (8 veces la pantalla del usuario)
+            // Restamos 1 pantalla porque el scroll inicia en la primera (pantalla 0)
+            var maxScroll = windowHeight * 7; 
 
-            // Calculamos el frame exacto mapeando el porcentaje con la duración de la animación
-            // totalFrames nos da el total de cuadros que exportaste desde After Effects
+            // Obtenemos el porcentaje de progreso (Clampeado entre 0 y 1 para evitar errores si sobrepasa)
+            var scrollPercent = scrollTop / maxScroll;
+            if (scrollPercent > 1) scrollPercent = 1;
+            if (scrollPercent < 0) scrollPercent = 0;
+
+            // Mapeamos el porcentaje con los frames totales de After Effects
             var targetFrame = scrollPercent * (animation.totalFrames - 1);
 
-            // Le decimos a Lottie que vaya a ese frame exacto y se detenga ahí
+            // Enviamos el cuadro exacto a la GPU mediante Lottie
             animation.goToAndStop(targetFrame, true);
         });
     });
